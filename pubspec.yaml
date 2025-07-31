@@ -1,0 +1,41 @@
+name: vhn
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  url_launcher:
+  firebase_core:
+  firebase_core_web:
+  firebase_auth:
+  firebase_auth_web:
+  cloud_firestore:
+  cloud_firestore_web:
+  email_validator:
+  modal_progress_hud_nsn:
+  shared_preferences:
+  syncfusion_flutter_xlsio:
+  csv:
+  performance:
+  google_fonts:
+  url_strategy:
+  get:
+  get_storage:
+  universal_html: ^2.2.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    - assets/transport_2024.csv
+  uses-material-design: true
