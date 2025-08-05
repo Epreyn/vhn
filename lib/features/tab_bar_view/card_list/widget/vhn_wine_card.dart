@@ -274,19 +274,6 @@ class _VhnWineCardState extends State<VhnWineCard> {
                   border: OutlineInputBorder(),
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                  // Ajout d'un bouton de validation pour iOS
-                  // suffixIcon: _isEditing
-                  //     ? IconButton(
-                  //         icon:
-                  //             Icon(Icons.check, size: 16, color: Colors.green),
-                  //         onPressed: () {
-                  //           _focusNode.unfocus();
-                  //           _validateAndUpdate();
-                  //         },
-                  //         padding: EdgeInsets.zero,
-                  //         constraints: BoxConstraints(maxWidth: 30),
-                  //       )
-                  //     : null,
                 ),
                 controller: quantityController,
                 keyboardType: TextInputType.numberWithOptions(
@@ -295,21 +282,10 @@ class _VhnWineCardState extends State<VhnWineCard> {
                 ),
                 textAlign: TextAlign.center,
                 textInputAction: TextInputAction.done,
-                // Forcer le clavier numérique sur iOS
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^-?\d*')),
                 ],
-                onTap: () {
-                  // Sélectionner tout le texte sur iOS
-                  if (quantityController.text == "0") {
-                    quantityController.clear();
-                  } else {
-                    quantityController.selection = TextSelection(
-                      baseOffset: 0,
-                      extentOffset: quantityController.text.length,
-                    );
-                  }
-                },
+                // onTap supprimé - comportement par défaut
                 onChanged: (value) {
                   if (!_isEditing) {
                     setState(() {
@@ -320,9 +296,7 @@ class _VhnWineCardState extends State<VhnWineCard> {
                 onFieldSubmitted: (value) {
                   _validateAndUpdate();
                 },
-                // Gestion spécifique pour iOS
                 onEditingComplete: () {
-                  // Ne pas unfocus automatiquement sur iOS
                   if (Theme.of(context).platform != TargetPlatform.iOS) {
                     _validateAndUpdate();
                   }

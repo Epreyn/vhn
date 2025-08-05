@@ -12,7 +12,14 @@ import '../../../../widgets/helpers/cell_maker.dart';
 
 enum PopupMenuItems { addItem, editItem, deleteItem }
 
-enum PopupMenuSMS { cavisteSMS, chrSMS, cavisteEmail, chrEmail, ambassadeEmail, ambassadeSMS }
+enum PopupMenuSMS {
+  cavisteSMS,
+  chrSMS,
+  cavisteEmail,
+  chrEmail,
+  ambassadeEmail,
+  ambassadeSMS
+}
 
 class VhnAreaPanel extends StatefulWidget {
   DocumentSnapshot domainSnap;
@@ -45,11 +52,14 @@ class _VhnAreaPanelState extends State<VhnAreaPanel> {
     return count.toString();
   }
 
-  DataColumn tableTitle(String title, String orderBy, int columnIndex, fontSize) {
+  DataColumn tableTitle(
+      String title, String orderBy, int columnIndex, fontSize) {
     IconData? icon;
 
     if (orderBy.toLowerCase() == orderType.toLowerCase()) {
-      descending == false ? icon = Icons.arrow_downward : icon = Icons.arrow_upward;
+      descending == false
+          ? icon = Icons.arrow_downward
+          : icon = Icons.arrow_upward;
     }
 
     return DataColumn(
@@ -105,6 +115,7 @@ class _VhnAreaPanelState extends State<VhnAreaPanel> {
       elevation: baseSpace,
       margin: EdgeInsets.all(baseSpace),
       child: ExpansionTile(
+        key: ObjectKey(widget.domainSnap.id),
         tilePadding: EdgeInsets.all(baseSpace * 2),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,8 +158,10 @@ class _VhnAreaPanelState extends State<VhnAreaPanel> {
                         );
                         break;
                       case PopupMenuItems.deleteItem:
-                        deleteItemPopup(context, setState, 'DOMAIN',
-                            {'id': widget.domainSnap.id, 'name': widget.domainSnap['name']});
+                        deleteItemPopup(context, setState, 'DOMAIN', {
+                          'id': widget.domainSnap.id,
+                          'name': widget.domainSnap['name']
+                        });
                         break;
                     }
                   },
@@ -170,7 +183,9 @@ class _VhnAreaPanelState extends State<VhnAreaPanel> {
             Spacing.height(baseSpace),
             Text('Facturation : ' + widget.domainSnap['invoice']),
             if (currentUserStatus == 'VHN')
-              Text('Déploiement : ' + getDeploy(widget.domainSnap['deploy']) + ' département(s)'),
+              Text('Déploiement : ' +
+                  getDeploy(widget.domainSnap['deploy']) +
+                  ' département(s)'),
           ],
         ),
         children: [
@@ -187,11 +202,14 @@ class _VhnAreaPanelState extends State<VhnAreaPanel> {
               if (snapshot.hasData) {
                 documents = snapshot.data!.docs;
                 descending
-                    ? documents.sort((a, b) => a[orderType].compareTo(b[orderType]))
-                    : documents.sort((a, b) => b[orderType].compareTo(a[orderType]));
+                    ? documents
+                        .sort((a, b) => a[orderType].compareTo(b[orderType]))
+                    : documents
+                        .sort((a, b) => b[orderType].compareTo(a[orderType]));
 
                 for (var wine in documents) {
-                  TextEditingController quantityController = TextEditingController(text: wine['quantity']);
+                  TextEditingController quantityController =
+                      TextEditingController(text: wine['quantity']);
                   //String? initialValue;
                   String currentQuantity = '';
                   resultWidgets.add(
@@ -234,15 +252,20 @@ class _VhnAreaPanelState extends State<VhnAreaPanel> {
                                     ),
                                     onFocusChange: (isFocus) async {
                                       if (!isFocus) {
-                                        if (quantityController.text != currentQuantity) {
+                                        if (quantityController.text !=
+                                            currentQuantity) {
                                           enableLoading(setState);
-                                          await _fStore.collection('n_wines').doc(wine.id).set({
+                                          await _fStore
+                                              .collection('n_wines')
+                                              .doc(wine.id)
+                                              .set({
                                             'quantity': quantityController.text,
                                           }, SetOptions(merge: true));
                                           disableLoading(setState);
                                         }
                                       } else {
-                                        currentQuantity = quantityController.text;
+                                        currentQuantity =
+                                            quantityController.text;
                                       }
                                     },
                                   ),
@@ -269,7 +292,8 @@ class _VhnAreaPanelState extends State<VhnAreaPanel> {
                                               'format': wine['format'],
                                               'quantity': wine['quantity'],
                                               'chr': wine['prices']['chr'],
-                                              'caviste': wine['prices']['caviste'],
+                                              'caviste': wine['prices']
+                                                  ['caviste'],
                                             },
                                             widget.domainSnap.id);
                                       },
@@ -280,14 +304,25 @@ class _VhnAreaPanelState extends State<VhnAreaPanel> {
                                       color: Colors.red,
                                       onPressed: () {
                                         deleteItemPopup(
-                                            context, setState, 'WINE', {'id': wine.id, 'cuvee': wine['cuvee']});
+                                            context, setState, 'WINE', {
+                                          'id': wine.id,
+                                          'cuvee': wine['cuvee']
+                                        });
                                       },
                                     ),
                                   ],
                                 )
-                              : currentUserStatus == 'Agent' || currentUserStatus == 'Vigneron'
-                                  ? Text(' CHR ' + wine['prices']['chr'] + ' / Caviste ' + wine['prices']['caviste'])
-                                  : Text(wine['prices'][currentUserStatus == 'CHR' ? 'chr' : 'caviste'] + ' €'),
+                              : currentUserStatus == 'Agent' ||
+                                      currentUserStatus == 'Vigneron'
+                                  ? Text(' CHR ' +
+                                      wine['prices']['chr'] +
+                                      ' / Caviste ' +
+                                      wine['prices']['caviste'])
+                                  : Text(wine['prices'][
+                                          currentUserStatus == 'CHR'
+                                              ? 'chr'
+                                              : 'caviste'] +
+                                      ' €'),
                         ),
                       ],
                     ),
@@ -310,7 +345,8 @@ class _VhnAreaPanelState extends State<VhnAreaPanel> {
                       tableTitle('Couleur', 'color', 2, null),
                       tableTitle('Format', 'format', 3, null),
                       tableTitle('Quantité', 'quantity', 4, null),
-                      tableTitle(currentUserStatus == 'VHN' ? '' : 'Prix', '', 5, null),
+                      tableTitle(currentUserStatus == 'VHN' ? '' : 'Prix', '',
+                          5, null),
                     ],
                     rows: resultWidgets,
                   ),

@@ -205,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Text(
-                'Version : 2.9.7',
+                'Version : 2.9.8',
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.black45,

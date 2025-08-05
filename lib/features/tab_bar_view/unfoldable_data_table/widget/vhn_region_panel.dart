@@ -57,6 +57,7 @@ class _VhnRegionPanelState extends State<VhnRegionPanel> {
       elevation: baseSpace,
       margin: EdgeInsets.all(baseSpace),
       child: ExpansionTile(
+        key: ObjectKey(widget.regionSnap.id),
         tilePadding: EdgeInsets.all(baseSpace * 2),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
