@@ -61,10 +61,8 @@ class _DomainListState extends State<DomainList> {
                 final data = wine.data() as Map<String, dynamic>;
                 data['id'] = wine.id;
 
-                // // Vérifier la quantité
-                // final quantity =
-                //     int.tryParse(data['quantity']?.toString() ?? '0') ?? 0;
-                // if (quantity == 0) continue; // Ignorer les vins avec quantité 0
+                // NE PAS filtrer par quantité - afficher TOUS les vins
+                // Même ceux avec quantité = 0
 
                 final cuvee = (data['cuvee'] ?? '').toString().toLowerCase();
                 final color = (data['color'] ?? '').toString().toLowerCase();

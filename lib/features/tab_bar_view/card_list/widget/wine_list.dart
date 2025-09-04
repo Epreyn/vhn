@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:vhn/features/tab_bar_view/card_list/widget/vhn_wine_card.dart';
-import '../../../../core/classes/uniques_controllers.dart';
 import '../../../../constants/data.dart';
-// SUPPRIMÉ : import '../../../navigation/vhn_search_controller.dart';
+import '../../../../core/classes/uniques_controllers.dart';
 
 class WineList extends StatefulWidget {
   String domainID;
@@ -68,10 +67,8 @@ class _WineListState extends State<WineList> {
                 final data = wine.data() as Map<String, dynamic>;
                 data['id'] = wine.id;
 
-                // // Vérifier la quantité
-                // final quantity =
-                //     int.tryParse(data['quantity']?.toString() ?? '0') ?? 0;
-                // if (quantity == 0) continue; // Ignorer les vins avec quantité 0
+                // NE PAS filtrer par quantité lors de la recherche
+                // Permettre de voir TOUS les vins même ceux à 0
 
                 final cuvee = (data['cuvee'] ?? '').toString().toLowerCase();
                 final color = (data['color'] ?? '').toString().toLowerCase();
@@ -198,20 +195,14 @@ class _WineListState extends State<WineList> {
               }
             }
 
-            // Créer les widgets
+            // Créer les widgets - SANS FILTRER PAR QUANTITÉ
             List<Widget> resultWidgets = [];
             for (var wine in results) {
-              // Vérifier la quantité
-              final data =
-                  wine is Map ? wine : wine.data() as Map<String, dynamic>;
-              final quantity =
-                  int.tryParse(data['quantity']?.toString() ?? '0') ?? 0;
-              if (quantity > 0) {
-                // Seulement si quantité > 0
-                resultWidgets.add(
-                  VhnWineCard(wineSnap: wine),
-                );
-              }
+              // NE PAS vérifier la quantité - afficher TOUS les vins
+              // Même ceux avec quantité = 0
+              resultWidgets.add(
+                VhnWineCard(wineSnap: wine),
+              );
             }
 
             if (resultWidgets.isEmpty) {
